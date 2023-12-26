@@ -1,57 +1,32 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, json } from 'react-router-dom'
+import ProductCard from '../../components/ProductCard/ProductCard'
+import axios from 'axios';
 
 export default function HomePage() {
 
-    const myAsyncFunction = () => {
-        return new Promise((resolve, reject) => {
-            resolve("http verisi");
-        });
-    }
+    const [products, setProducts] = useState([]);
+
     useEffect(() => {
-        makeAsyncCall();
-        makeHttpCall();
-    }, []);
+        fetchProducts();
 
-    const makeHttpCall = async () => {
-        // fetch("https://dummyjson.com/products")
-        // .then(response=>c.json() )
-        // .then(json=>console.log(json))
-        // .catch(err=>console.log(err))
-        let response =await fetch("https://dummyjson.com/products");
-        let json=await response.json();
-        console.log(json);
+    }, [])
 
+
+    const fetchProducts = async () => {
+        let response = await axios.get("https://dummyjson.com/products")
+        setProducts(response.data.products);
     };
-    const makeAsyncCall = async () => {
-        // myAsyncFunction().then(response => {
-        //     console.log("işlem başarılı cevap", response);
-        // })//async işlemi  başarılı ise (resolve edildiğinde)
-        // .catch(error => {
-        //     console.log("işlem başarısız cevap", error);
-        // })//async işlemi  başarısız ise (reject edildiğinde)
-        // .finally(() => {
-        //     console.log("işlem tamamlandı");
-        // });//her türlü çalışır
-        // console.log("merhaba");
 
-        //es7 async-await
-
-        //reject edilirse hata atar try catch manuel olmalı
-        try {
-            let response = await myAsyncFunction();
-            console.log(response);
-        } catch (e) {
-            console.log(e);
-        }
-
-    };
     return (
-        <div>
-            <button className='btn btn-primary'> Homapage</button>
-            <br />
-            {/*Spalarda(single page app) href kullanımı yanlıştır*/}{/*<a href="/about">About'a Git</a>*/}
-            <Link to={"/about"}>About'a Git</Link>
+        <div className="container text-center mt-5">
+            <div className="row " >
+                {products.map(product => (
+                    <div key={product.id} className="col-lg-3 col-md-12 mb-5">
+                        <ProductCard product= {product}/>
+                    </div>
+                ))}
+            </div>
         </div>
-    )
+    );
 }
