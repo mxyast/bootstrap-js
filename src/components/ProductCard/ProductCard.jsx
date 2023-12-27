@@ -24,10 +24,8 @@ export default function ProductCard(props) {
                     <p className="card-text">{props.product.description}</p>
 
                     <div>
-                        <button className='btn btn-primary' onClick={productDelete}> Ürünü Sil</button>
-                        <br />
-
-                        <Link to="/about" state={{ state: props.product.id }} >Ürün Detayı</Link>
+                        <Link to={"/product-detail/" + props.product.id} className="btn btn-primary">Details</Link>
+                        <button onClick={() => { productDelete(); }} className="btn btn-danger">Sil</button>
                     </div>
                 </div>
             </div>
